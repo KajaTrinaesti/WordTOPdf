@@ -20,7 +20,7 @@ function sendMail(mail, pathFile) {
         service: 'gmail',
         auth: {
           user: 'dkarahmetovic5@gmail.com',
-          pass: process.env.PASSWORD
+          pass: 'testsifra123' || process.env.PASSWORD
         }
     });
     
