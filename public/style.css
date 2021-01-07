@@ -1,0 +1,148 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    width: 100%;
+    min-height: 100%;
+}
+
+.container {
+    width: 60%;
+    height: 70%;
+    background-color: #ccc;
+    margin: 5% auto;
+}
+
+.upper {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    color: rgb(155, 155, 155);
+    background-color: #fff;
+    font-size: 1.5em;
+}
+
+.upper i {
+    padding-right: 10px;
+}
+
+.upper span {
+    font-weight: 700;
+}
+
+.content {
+    background-color: rgb(94, 94, 246);
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+}
+
+.upperContent {
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.upperContent h2 {
+    margin-bottom: 2%;
+}
+
+.mainContent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.icons {
+    margin: 5% 0 8% 5%;
+}
+
+.icons i {
+    font-size: 8rem;
+    margin-left: 10px;
+}
+
+.icons i:nth-child(2) {
+    font-size: 3rem;
+}
+
+.files {
+    margin: 2% 5%;
+    width: 40%;
+    background-color: rgb(122, 122, 228);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.files form {
+    align-items: center;
+    width: 80%;
+    text-align: center;
+}
+
+.files input {
+    margin-top: 10px;
+    border: 0;
+    background-color: blue;
+    color: #fff;
+    padding: 15px;
+    cursor: pointer;
+}
+
+.none {
+    display: none;
+}
+
+.custom-file-upload {
+    margin: 10px 10px 0 0;
+    background-color: orange;
+    display: inline-block;
+    padding: 14px 20px;
+    cursor: pointer;
+}
+
+.download {
+    border: 0;
+    margin-top: 10px;
+    color: #fff;
+    padding: 15px 45px;
+    width: 80%;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.download.disabled {
+    background-color: gray;
+    pointer-events: none;
+}
+
+.download.enabled {
+    background-color: green;
+}
+
+.files .email {
+    background-color: #fff;
+    width: 100%;
+    color: #000;
+    cursor: text;
+    margin-bottom: 10px;
+}
+
+#poruka a {
+    text-decoration: none;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />    
+    <link href="style.css" type="text/css" rel="stylesheet" />
+    <title>Word to pdf</title>
+</head>
+<body>
+    <div class="container">
+        <div class="upper">
+            <div>
+                <i class="fa fa-exchange-alt"></i><span>WORD</span> to <span>PDF</span>
+            </div>
+            <div>
+                <span id="docsConverted">0</span> Documents Converted!
+            </div>
+        </div>
+        <div class="content">
+            <div class="upperContent">
+                <h2>Convert Word to PDF Documents for FREE</h2>
+                <p>Our online tool allows you to convert Word documents to PDF for free. No registration required.</p>
+            </div>
+            <div class="mainContent">
+                <div class="icons">
+                    <i class="fa fa-file-word"></i>
+                    <i class="fa fa-arrow-right"></i>
+                    <i class="fa fa-file-pdf"></i>
+                </div>
+                <div class="files">
+                    <form id="form" action="upload" method="POST" enctype="multipart/form-data"  target="after" onsubmit="close()" >
+                        <input class="email" id="email" name="email" type="email" placeholder="I want to receive file on this email (Enter email) " />
+                        <h3>Select your Word file</h3>
+                        <label class="custom-file-upload">
+                            <input class="none" type="file" name="upfile" id="file" />
+                            <span id="choosenFile">Choose file</span>
+                        </label>
+                        <input id="submit" type="submit" value="Convert" />
+                    </form>
+                    <iframe class="none" id="after" name="after"></iframe>
+                    <p id="poruka" class="none">Wait while we proccess your file</p>
+                    <a id="download" class="download disabled" href="/getFileLink" download >Download</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="./index.js"></script>
+</body>
+</html>
