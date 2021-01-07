@@ -97,11 +97,10 @@ let allowCrossDomain = function(req, res, next) {
 };
 
 
-app.configure(() => {
-    app.use(allowCrossDomain);
-    app.use(upload())
-    app.use(express.static(path.join(__dirname, 'public')))
-})
+app.use(allowCrossDomain);
+app.use(upload())
+app.use(express.static(path.join(__dirname, 'public')))
+
 
 
 app.get('/', (req, res) => {
