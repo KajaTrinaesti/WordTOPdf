@@ -85,62 +85,7 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 
 
 
-
-
-conf = {
-    
-    originUndefined: function (req, res, next) {
- 
-        if (!req.headers.origin) {
- 
-            res.json({
- 
-                mess: 'Hi you are visiting the service locally. If this was a CORS the origin header should not be undefined'
- 
-            });
- 
-        } else {
- 
-            next();
- 
-        }
- 
-    },
- 
-    // Cross Origin Resource Sharing Options
-    cors: {
- 
-        // origin handler
-        origin: function (origin, cb) {
- 
-            // setup a white list
-            let wl = ['https://word-pdf.herokuapp.com/'];
- 
-            if (wl.indexOf(origin) != -1) {
- 
-                cb(null, true);
- 
-            } else {
- 
-                cb(new Error('invalid origin: ' + origin), false);
- 
-            }
- 
-        },
- 
-        optionsSuccessStatus: 200
- 
-    }
- 
-};
- 
-// use origin undefined handler, then cors for all paths
-app.use(conf.originUndefined, cors(conf.cors));
-
-
-
-
-
+app.use(cors())
 
 
 
