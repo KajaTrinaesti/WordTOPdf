@@ -62,7 +62,7 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 
         fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
 
-        app.get('/getFileLink-' + randomID, (req, res) => {
+        app.get('/getFileLink-' + randomID, cors(), (req, res) => {
             res.sendFile(filePathPDF)
         })
 
@@ -84,8 +84,6 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 }
 
 
-
-app.use(cors())
 
 
 
