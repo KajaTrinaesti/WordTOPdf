@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const upload = require('express-fileupload')
 const fs = require('fs');
-const cors = require('cors')
 const nodemailer = require('nodemailer')
 const convertapi = require('convertapi')('Yial6A6yFLQvdNa0')
 
@@ -10,8 +9,7 @@ require('dotenv').config()
 
 const app = express();
 
-app.use(upload())
-app.use(express.static(path.join(__dirname, 'public')))
+
 
 
 let randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
@@ -62,7 +60,7 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 
         fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
 
-        app.get('/getFileLink-' + randomID, cors(), (req, res) => {
+        app.get('/getFileLink-' + randomID, (req, res) => {
             res.sendFile(filePathPDF)
         })
 
@@ -84,11 +82,26 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 }
 
 
+let allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+};
 
 
-
-
-
+app.configure(() => {
+    app.use(allowCrossDomain);
+    app.use(upload())
+    app.use(express.static(path.join(__dirname, 'public')))
+})
 
 
 app.get('/', (req, res) => {
