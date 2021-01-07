@@ -20,7 +20,7 @@ function sendMail(mail, pathFile) {
         service: 'gmail',
         auth: {
           user: 'dkarahmetovic5@gmail.com',
-          pass: 'testsifra123' || process.env.PASSWORD
+          pass: process.env.PASSWORD
         }
     });
     
@@ -60,7 +60,7 @@ app.get('/api', (req, res) => {
 })
 
 app.post('/upload', (req, res) => {
-    console.log(req.body, req.files)
+    // console.log(req.body, req.files)
     if(req.files && req.files.upfile) {
         let file = req.files.upfile;
         let name = file.name;
@@ -93,7 +93,7 @@ app.post('/upload', (req, res) => {
                             res.status(401)
                             res.send({"message": "Something went wrong!"})
                         })
-                        console.log('ERROR')
+                        console.log('File write error', err)
                 })
 
 
