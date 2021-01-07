@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const upload = require('express-fileupload')
 const fs = require('fs');
+const cors = require('cors')
 const nodemailer = require('nodemailer')
 const convertapi = require('convertapi')('Yial6A6yFLQvdNa0')
 
@@ -11,6 +12,9 @@ const app = express();
 
 app.use(upload())
 app.use(express.static(path.join(__dirname, 'public')))
+
+
+let randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
 
 
 let dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'}); 
@@ -58,7 +62,7 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 
         fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
 
-        app.get('/getFileLink', (req, res) => {
+        app.get('/getFileLink-' + randomID, (req, res) => {
             res.sendFile(filePathPDF)
         })
 
@@ -69,7 +73,7 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
         }
 
     }).catch(err => {
-        app.get('/getFileLink', (req, res) => {
+        app.get('/getFileLink-' + randomID, (req, res) => {
             res.status(401)
             res.send({"message": "Something went wrong!"})
         })
@@ -80,24 +84,80 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 }
 
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", '*');
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
-    next();
-});
+
+
+
+conf = {
+    
+    originUndefined: function (req, res, next) {
+ 
+        if (!req.headers.origin) {
+ 
+            res.json({
+ 
+                mess: 'Hi you are visiting the service locally. If this was a CORS the origin header should not be undefined'
+ 
+            });
+ 
+        } else {
+ 
+            next();
+ 
+        }
+ 
+    },
+ 
+    // Cross Origin Resource Sharing Options
+    cors: {
+ 
+        // origin handler
+        origin: function (origin, cb) {
+ 
+            // setup a white list
+            let wl = ['https://word-pdf.herokuapp.com/'];
+ 
+            if (wl.indexOf(origin) != -1) {
+ 
+                cb(null, true);
+ 
+            } else {
+ 
+                cb(new Error('invalid origin: ' + origin), false);
+ 
+            }
+ 
+        },
+ 
+        optionsSuccessStatus: 200
+ 
+    }
+ 
+};
+ 
+// use origin undefined handler, then cors for all paths
+app.use(conf.originUndefined, cors(conf.cors));
+
+
+
+
+
+
+
+
+
 
 
 
 app.get('/', (req, res) => {
+
 })
 
 app.get('/api', (req, res) => {
     dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'});
 
     res.json({
-        documentsConverted: dataForFiles
+        documentsConverted: dataForFiles,
+        randomID
     })
 })
 
@@ -112,7 +172,7 @@ app.post('/upload', (req, res) => {
         file.mv(filePathWord, err => {
             if(err) {
                 console.log('Error! ', name, err)
-                app.get('/getFileLink', (req, res) => {
+                app.get('/getFileLink-' + randomID, (req, res) => {
                                     res.status(401)
                     res.send({"message": "Something went wrong!"})
                 })
@@ -127,7 +187,7 @@ app.post('/upload', (req, res) => {
         })
     } else {
         console.log('No file selected!')
-        app.get('/getFileLink', (req, res) => {
+        app.get('/getFileLink-' + randomID, (req, res) => {
                     res.status(401)
             res.json({"message": "No file selected!"})
         })

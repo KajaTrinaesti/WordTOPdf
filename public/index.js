@@ -1,7 +1,10 @@
 let submit =  document.getElementById('submit')
 let selectedFile = document.getElementById('file')
+let download = document.getElementById('download')
 
 let documentsConverted = 0;
+let randomID;
+
 let request = async () => {
     const response = await fetch('http://localhost:3000/api');
     const data = await response.json();
@@ -9,7 +12,10 @@ let request = async () => {
     let docsConverted = document.getElementById('docsConverted');
     docsConverted.innerText = documentsConverted;
 
-    console.log(documentsConverted)
+    randomID = data.randomID
+
+    download.href = `/getFileLink-${randomID}`
+
 }
 
 request()
@@ -35,9 +41,8 @@ submit.onclick = (e) => {
 
 
     let interval = setInterval(() => {
-        fetch('http://localhost:3000/getFileLink')
+        fetch('http://localhost:3000/getFileLink-' + randomID)
             .then(data => {
-                console.log(data)
                 if(data.status === 200) {
                     clearInterval(interval)
 
