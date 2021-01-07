@@ -80,14 +80,20 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 }
 
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+    next();
+});
+
+
 
 
 app.get('/', (req, res) => {
-    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 })
 
 app.get('/api', (req, res) => {
-    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
     dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'});
 
     res.json({
@@ -96,7 +102,6 @@ app.get('/api', (req, res) => {
 })
 
 app.post('/upload', (req, res) => {
-    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
     // console.log(req.body, req.files)
     if(req.files && req.files.upfile) {
         let file = req.files.upfile;
@@ -108,7 +113,7 @@ app.post('/upload', (req, res) => {
             if(err) {
                 console.log('Error! ', name, err)
                 app.get('/getFileLink', (req, res) => {
-                    res.status(401)
+                                    res.status(401)
                     res.send({"message": "Something went wrong!"})
                 })
                 res.send('Error occured')
@@ -123,7 +128,7 @@ app.post('/upload', (req, res) => {
     } else {
         console.log('No file selected!')
         app.get('/getFileLink', (req, res) => {
-            res.status(401)
+                    res.status(401)
             res.json({"message": "No file selected!"})
         })
         res.send()
