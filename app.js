@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
 const upload = require('express-fileupload')
-const convertToPDF = require('office-to-pdf')
 const fs = require('fs');
 const nodemailer = require('nodemailer')
+const convertapi = require('convertapi')('Yial6A6yFLQvdNa0')
 
 require('dotenv').config()
 
@@ -46,6 +46,42 @@ function sendMail(mail, pathFile) {
 }
 
 
+
+function convertWordToPDF(req, filePathWord, filePathPDF, ) {
+    
+    convertapi.convert('pdf', {
+        File: filePathWord
+    }, 'docx').then(result => {
+        console.log(result)
+
+        result.saveFiles(filePathPDF)
+
+        fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
+
+        app.get('/getFileLink', (req, res) => {
+            res.sendFile(filePathPDF)
+        })
+
+        if(req.body.email) {
+            let email = req.body.email
+
+            sendMail(email, filePathPDF)
+        }
+
+    }).catch(err => {
+        app.get('/getFileLink', (req, res) => {
+            res.status(401)
+            res.send({"message": "Something went wrong!"})
+        })
+        console.log('File write error', err)
+    })
+    
+    
+}
+
+
+
+
 app.get('/', (req, res) => {
 
 })
@@ -65,8 +101,9 @@ app.post('/upload', (req, res) => {
         let file = req.files.upfile;
         let name = file.name;
         let type = file.mimetype;
+        let filePathWord = path.join(__dirname, 'uploads', name)
 
-        file.mv(`${__dirname}/uploads/${name}`, err => {
+        file.mv(filePathWord, err => {
             if(err) {
                 console.log('Error! ', name, err)
                 app.get('/getFileLink', (req, res) => {
@@ -75,34 +112,9 @@ app.post('/upload', (req, res) => {
                 })
                 res.send('Error occured')
             } else {
-                console.log('Successfully saved', name)
-
-                let filePathPDF = `${__dirname}/uploads/${name}.pdf`
-
-                convertToPDF(fs.readFileSync(`${__dirname}/uploads/${name}`))
-                    .then(pdfBuffer => {
-                        fs.writeFileSync(filePathPDF, pdfBuffer)
-
-                        fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
-
-                        app.get('/getFileLink', (req, res) => {
-                            res.sendFile(filePathPDF)
-                        })
-                    }).catch(err => {
-                        app.get('/getFileLink', (req, res) => {
-                            res.status(401)
-                            res.send({"message": "Something went wrong!"})
-                        })
-                        console.log('File write error', err)
-                })
-
-
-                if(req.body.email) {
-                    let email = req.body.email
-
-                    sendMail(email, filePathPDF)
-                }
-
+                let filePathPDF = path.join(__dirname, 'uploads', `${name}.pdf`)
+                
+                convertWordToPDF(req, filePathWord, filePathPDF)
 
                 res.send('Done')
             }
