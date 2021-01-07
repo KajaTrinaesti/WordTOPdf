@@ -83,11 +83,11 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 
 
 app.get('/', (req, res) => {
-
+    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 })
 
 app.get('/api', (req, res) => {
-
+    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
     dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'});
 
     res.json({
@@ -96,6 +96,7 @@ app.get('/api', (req, res) => {
 })
 
 app.post('/upload', (req, res) => {
+    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
     // console.log(req.body, req.files)
     if(req.files && req.files.upfile) {
         let file = req.files.upfile;

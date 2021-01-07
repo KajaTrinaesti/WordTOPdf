@@ -37,6 +37,7 @@ submit.onclick = (e) => {
     let interval = setInterval(() => {
         fetch('http://localhost:3000/getFileLink')
             .then(data => {
+                console.log(data)
                 if(data.status === 200) {
                     clearInterval(interval)
 
