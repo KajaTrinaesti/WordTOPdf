@@ -11,7 +11,7 @@ const app = express();
 
 
 
-
+let zaVerify = 0;
 let randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
 
 
@@ -111,7 +111,11 @@ app.get('/', (req, res) => {
 app.get('/api', (req, res) => {
     dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'});
 
-    randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
+    if(zaVerify) {
+        randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
+    } else {
+        zaVerify++
+    }
     res.json({
         documentsConverted: dataForFiles,
         randomID
