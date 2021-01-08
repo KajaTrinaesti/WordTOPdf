@@ -6,7 +6,7 @@ let documentsConverted = 0;
 let randomID;
 
 let request = async () => {
-    const response = await fetch('http://localhost:3000/api');
+    const response = await fetch('/api');
     const data = await response.json();
     documentsConverted = data.documentsConverted ? data.documentsConverted : '0';
     let docsConverted = document.getElementById('docsConverted');
@@ -41,7 +41,7 @@ submit.onclick = (e) => {
 
 
     let interval = setInterval(() => {
-        fetch('http://localhost:3000/getFileLink-' + randomID)
+        fetch('/getFileLink-' + randomID)
             .then(data => {
                 if(data.status === 200) {
                     clearInterval(interval)
