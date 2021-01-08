@@ -4,6 +4,7 @@ let download = document.getElementById('download')
 
 let documentsConverted = 0;
 let randomID;
+let test = 1;
 
 let request = async () => {
     const response = await fetch('/api');
@@ -12,8 +13,11 @@ let request = async () => {
     let docsConverted = document.getElementById('docsConverted');
     docsConverted.innerText = documentsConverted;
 
-    randomID = data.randomID
-
+    if(test) {
+        randomID = data.randomID
+        test--
+    } 
+    
     download.href = `/getFileLink-${randomID}`
 
 }
