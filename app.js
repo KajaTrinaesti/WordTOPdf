@@ -60,7 +60,7 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
 
         fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
 
-        randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
+        
         app.get('/getFileLink-' + randomID, (req, res) => {
             res.sendFile(filePathPDF)
         })
@@ -72,7 +72,6 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
         }
 
     }).catch(err => {
-        randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
         app.get('/getFileLink-' + randomID, (req, res) => {
             res.status(401)
             res.send({"message": "Something went wrong!"})
@@ -111,8 +110,8 @@ app.get('/', (req, res) => {
 
 app.get('/api', (req, res) => {
     dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'});
-    randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
 
+    randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
     res.json({
         documentsConverted: dataForFiles,
         randomID
@@ -130,8 +129,6 @@ app.post('/upload', (req, res) => {
         file.mv(filePathWord, err => {
             if(err) {
                 console.log('Error! ', name, err)
-
-                randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
                 app.get('/getFileLink-' + randomID, (req, res) => {
                                     res.status(401)
                     res.send({"message": "Something went wrong!"})
@@ -147,8 +144,6 @@ app.post('/upload', (req, res) => {
         })
     } else {
         console.log('No file selected!')
-
-        randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
         app.get('/getFileLink-' + randomID, (req, res) => {
                     res.status(401)
             res.json({"message": "No file selected!"})
