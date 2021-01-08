@@ -39,32 +39,35 @@ submit.onclick = (e) => {
     document.getElementById('form').classList.add('none')
     document.getElementById('poruka').classList.remove('none')
 
-
+    let pokusaji = 0;
     let interval = setInterval(() => {
-        fetch('/getFileLink-' + randomID)
-            .then(data => {
-                if(data.status === 200) {
-                    clearInterval(interval)
+        if(pokusaji > 20) {
+            document.getElementById('poruka').innerHTML = '<span class="red">Request took too long to complete</span> <a href=".">Try again</a>'
+            alert('Request took too long to complete. Please try again')
+            clearInterval(interval)
+        } else {
+            fetch('/getFileLink-' + randomID)
+                .then(data => {
+                    if(data.status === 200) {
+                        clearInterval(interval)
 
-                    request()
+                        request()
 
-                    document.getElementById('download').classList.remove('disabled')
-                    document.getElementById('download').classList.add('enabled')
-                    document.getElementById('poruka').innerHTML = 'Your file is ready to download <a href=".">Convert again</a>'
-                }
-                if(data.status === 401) {
-                    clearInterval(interval)
-                    document.getElementById('poruka').innerHTML = '<span class="red">Something went wrong!</span> <a href=".">Try again</a>'
-                    alert('Something went wrong. Please try again!')
-                }
-            }).catch(err => {
-
-            })
+                        document.getElementById('download').classList.remove('disabled')
+                        document.getElementById('download').classList.add('enabled')
+                        document.getElementById('poruka').innerHTML = 'Your file is ready to download <a href=".">Convert again</a>'
+                    }
+                    if(data.status === 401) {
+                        clearInterval(interval)
+                        document.getElementById('poruka').innerHTML = '<span class="red">Something went wrong!</span> <a href=".">Try again</a>'
+                        alert('Something went wrong. Please try again!')
+                    }
+                }).catch(err => {
+                    pokusaji++
+                })
+        }
     }, 2000)
-
-    
 }
-
 
 function checkFileType(type, input) {
     if(type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
