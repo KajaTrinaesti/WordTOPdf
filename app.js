@@ -54,16 +54,18 @@ function convertWordToPDF(req, filePathWord, filePathPDF, ) {
     convertapi.convert('pdf', {
         File: filePathWord
     }, 'docx').then(result => {
-        console.log(result)
+        // console.log(result)
 
         result.saveFiles(filePathPDF)
 
+        
         fs.writeFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), +dataForFiles + 1)
-
         
         app.get('/getFileLink-' + randomID, (req, res) => {
             res.sendFile(filePathPDF)
         })
+        
+
 
         if(req.body.email) {
             let email = req.body.email
@@ -111,15 +113,12 @@ app.get('/', (req, res) => {
 app.get('/api', (req, res) => {
     dataForFiles = fs.readFileSync(path.join(__dirname, 'filesConverted', 'filesConverted.txt'), {encoding:'utf8'});
 
-    if(zaVerify) {
-        randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
-    } else {
-        zaVerify++
-    }
     res.json({
         documentsConverted: dataForFiles,
         randomID
     })
+
+    randomID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
 })
 
 app.post('/upload', (req, res) => {
